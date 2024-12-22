@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService{
                     if (jwtService.isTokenExpired(confirmationToken)) {
                         String newConfirmationToken = jwtService.generateToken(existingUser);
                         existingUser.setConfirmationToken(newConfirmationToken);
-                        sendConfirmationEmail(existingUser, confirmationToken,"To confirm your account, please click here : " , "Welcome to Talkey !!,Confirmation Email", "http://localhost:8080/auth/verify?token=");
+                        sendConfirmationEmail(existingUser, confirmationToken,"To confirm your account, please click here : " , "Welcome to Cura !!,Confirmation Email", "https://cura-addiction-recovery.netlify.app?token=");
                         usersRepository.save(existingUser);
                         return ResponseEntity.ok("Verify email by the link sent on your email address");
                     } else {
@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService{
 
                 String confirmationToken = jwtService.generateToken(newUser);
                 newUser.setConfirmationToken(confirmationToken);
-                sendConfirmationEmail(newUser, confirmationToken,"To confirm your account, please click here : " , "Welcome to Talkey !!,Confirmation Email", "http://localhost:8080/auth/verify?token=");
+                sendConfirmationEmail(newUser, confirmationToken,"To confirm your account, please click here : " , "Welcome to Talkey !!,Confirmation Email", "https://cura-addiction-recovery.netlify.app?token=");
                 usersRepository.save(newUser);
 
                 return ResponseEntity.ok("Verify email by the link sent on your email address");
@@ -173,7 +173,7 @@ public class UserServiceImpl implements UserService{
                     confirmationToken = jwtService.generateToken(user);
                     user.setConfirmationToken(confirmationToken);
                     sendConfirmationEmail(user, confirmationToken,
-                            "To reset the password of your account, please click here: ", "Reset Password!!", "http://localhost:8080/auth/reset-password?token=");
+                            "To reset the password of your account, please click here: ", "Reset Password!!", "https://cura-addiction-recovery.netlify.app/reset?token=");
                     usersRepository.save(user);
                     return ResponseEntity.ok("Password reset link has been sent to your email.");
                 }

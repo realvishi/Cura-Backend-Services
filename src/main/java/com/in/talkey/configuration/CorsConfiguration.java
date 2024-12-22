@@ -16,7 +16,7 @@ public class CorsConfiguration implements WebMvcConfigurer {
                 .allowCredentials(true)
                 .allowedHeaders("*")
                 .allowedMethods("GET", "POST", "PATCH", "DELETE")
-                .allowedOrigins("http://localhost:3000");
+                .allowedOrigins("https://cura-addiction-recovery.netlify.app/");
     }
 
 }
