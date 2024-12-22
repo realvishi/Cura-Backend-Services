@@ -71,8 +71,8 @@ public class UserServiceImpl implements UserService{
                     if (jwtService.isTokenExpired(confirmationToken)) {
                         String newConfirmationToken = jwtService.generateToken(existingUser);
                         existingUser.setConfirmationToken(newConfirmationToken);
-                        sendConfirmationEmail(existingUser, confirmationToken,"To confirm your account, please click here : " , "Welcome to Cura !!,Confirmation Email", "https://cura-addiction-recovery.netlify.app?token=");
-                        usersRepository.save(existingUser);
+                        sendConfirmationEmail(existingUser, confirmationToken,"Thank you for signing up with Cura! We're excited to have you join our community.</p>" +
+                           "            <p>To complete your registration, please click the button below:" , "Welcome to Cura! Confirm Your Account", "https://cura-addiction-recovery.netlify.app?token=", "Confirm My Account");
                         return ResponseEntity.ok("Verify email by the link sent on your email address");
                     } else {
                         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
@@ -90,7 +90,8 @@ public class UserServiceImpl implements UserService{
 
                 String confirmationToken = jwtService.generateToken(newUser);
                 newUser.setConfirmationToken(confirmationToken);
-                sendConfirmationEmail(newUser, confirmationToken,"To confirm your account, please click here : " , "Welcome to Cura !!,Confirmation Email", "https://cura-addiction-recovery.netlify.app?token=");
+                sendConfirmationEmail(newUser, confirmationToken,"Thank you for signing up with Cura! We're excited to have you join our community.</p>" +
+                           "            <p>To complete your registration, please click the button below:" , "Welcome to Cura! Confirm Your Account", "https://cura-addiction-recovery.netlify.app?token=", "Confirm My Account");
                 usersRepository.save(newUser);
 
                 return ResponseEntity.ok("Verify email by the link sent on your email address");
@@ -101,15 +102,84 @@ public class UserServiceImpl implements UserService{
         }
     }
 
-    private void sendConfirmationEmail(Users user, String confirmationToken, String message, String subject, String url) {
+    public String createConfirmationEmailBody(String message, String url, String buttonText) {
+        return "<!DOCTYPE html>" +
+               "<html lang=\"en\">" +
+               "<head>" +
+               "    <meta charset=\"UTF-8\">" +
+               "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">" +
+               "    <title>Confirmation Email</title>" +
+               "    <style>" +
+               "        body {" +
+               "            font-family: 'Arial', sans-serif;" +
+               "            background-color: #f9f9f9;" +
+               "            color: #333;" +
+               "            margin: 0;" +
+               "            padding: 0;" +
+               "            text-align: center;" +
+               "        }" +
+               "        .container {" +
+               "            max-width: 600px;" +
+               "            margin: 20px auto;" +
+               "            background-color: #ffffff;" +
+               "            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);" +
+               "            border-radius: 8px;" +
+               "            overflow: hidden;" +
+               "        }" +
+               "        .header {" +
+               "            background-color: #4CAF50;" +
+               "            color: #ffffff;" +
+               "            padding: 20px 0;" +
+               "        }" +
+               "        .content {" +
+               "            padding: 20px;" +
+               "        }" +
+               "        .content p {" +
+               "            margin: 10px 0;" +
+               "        }" +
+               "        .button-container {" +
+               "            margin-top: 20px;" +
+               "        }" +
+               "        .button {" +
+               "            display: inline-block;" +
+               "            padding: 10px 20px;" +
+               "            background-color: #4CAF50;" +
+               "            color: #ffffff;" +
+               "            text-decoration: none;" +
+               "            border-radius: 5px;" +
+               "        }" +
+               "        .button:hover {" +
+               "            background-color: #45a049;" +
+               "        }" +
+               "    </style>" +
+               "</head>" +
+               "<body>" +
+               "    <div class=\"container\">" +
+               "        <div class=\"header\">" +
+               "            <h1>Welcome to Cura!</h1>" +
+               "        </div>" +
+               "        <div class=\"content\">" +
+               "            <p>" + message + "</p>" +
+               "            <div class=\"button-container\">" +
+               "                <a href=\"" + url + "\" class=\"button\">" + buttonText + "</a>" +
+               "            </div>" +
+               "        </div>" +
+               "    </div>" +
+               "</body>" +
+               "</html>";
+    }
+    
+    private void sendConfirmationEmail(Users user, String confirmationToken, String message, String subject, String url, String buttonText) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(user.getEmail());
         mailMessage.setSubject(subject);
-        mailMessage.setText("Hello Dear, " + user.getName() + "\n" +
-                message + "\n" +
-                url + confirmationToken);
+    
+        String emailBody = createConfirmationEmailBody(message, url + confirmationToken, buttonText);
+        mailMessage.setText(emailBody);
+    
         emailService.Send(mailMessage);
     }
+    
 
 
     @Override
@@ -173,7 +243,7 @@ public class UserServiceImpl implements UserService{
                     confirmationToken = jwtService.generateToken(user);
                     user.setConfirmationToken(confirmationToken);
                     sendConfirmationEmail(user, confirmationToken,
-                            "To reset the password of your account, please click here: ", "Reset Password!!", "https://cura-addiction-recovery.netlify.app/reset?token=");
+                            "It seems you've requested to reset your password. Please click the button below to proceed:", "Reset Your Cura Password", "https://cura-addiction-recovery.netlify.app/reset?token=" , "Reset My Password");
                     usersRepository.save(user);
                     return ResponseEntity.ok("Password reset link has been sent to your email.");
                 }
