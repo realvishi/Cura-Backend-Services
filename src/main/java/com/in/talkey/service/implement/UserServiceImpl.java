@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService{
 
                 String confirmationToken = jwtService.generateToken(newUser);
                 newUser.setConfirmationToken(confirmationToken);
-                sendConfirmationEmail(newUser, confirmationToken,"To confirm your account, please click here : " , "Welcome to Talkey !!,Confirmation Email", "https://cura-addiction-recovery.netlify.app?token=");
+                sendConfirmationEmail(newUser, confirmationToken,"To confirm your account, please click here : " , "Welcome to Cura !!,Confirmation Email", "https://cura-addiction-recovery.netlify.app?token=");
                 usersRepository.save(newUser);
 
                 return ResponseEntity.ok("Verify email by the link sent on your email address");
