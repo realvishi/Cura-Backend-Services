@@ -104,80 +104,104 @@ public class UserServiceImpl implements UserService{
 
     public String createConfirmationEmailBody(String message, String url, String buttonText) {
         return "<!DOCTYPE html>" +
-               "<html lang=\"en\">" +
-               "<head>" +
-               "    <meta charset=\"UTF-8\">" +
-               "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">" +
-               "    <title>Confirmation Email</title>" +
-               "    <style>" +
-               "        body {" +
-               "            font-family: 'Arial', sans-serif;" +
-               "            background-color: #f9f9f9;" +
-               "            color: #333;" +
-               "            margin: 0;" +
-               "            padding: 0;" +
-               "            text-align: center;" +
-               "        }" +
-               "        .container {" +
-               "            max-width: 600px;" +
-               "            margin: 20px auto;" +
-               "            background-color: #ffffff;" +
-               "            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);" +
-               "            border-radius: 8px;" +
-               "            overflow: hidden;" +
-               "        }" +
-               "        .header {" +
-               "            background-color: #4CAF50;" +
-               "            color: #ffffff;" +
-               "            padding: 20px 0;" +
-               "        }" +
-               "        .content {" +
-               "            padding: 20px;" +
-               "        }" +
-               "        .content p {" +
-               "            margin: 10px 0;" +
-               "        }" +
-               "        .button-container {" +
-               "            margin-top: 20px;" +
-               "        }" +
-               "        .button {" +
-               "            display: inline-block;" +
-               "            padding: 10px 20px;" +
-               "            background-color: #4CAF50;" +
-               "            color: #ffffff;" +
-               "            text-decoration: none;" +
-               "            border-radius: 5px;" +
-               "        }" +
-               "        .button:hover {" +
-               "            background-color: #45a049;" +
-               "        }" +
-               "    </style>" +
-               "</head>" +
-               "<body>" +
-               "    <div class=\"container\">" +
-               "        <div class=\"header\">" +
-               "            <h1>Welcome to Cura!</h1>" +
-               "        </div>" +
-               "        <div class=\"content\">" +
-               "            <p>" + message + "</p>" +
-               "            <div class=\"button-container\">" +
-               "                <a href=\"" + url + "\" class=\"button\">" + buttonText + "</a>" +
-               "            </div>" +
-               "        </div>" +
-               "    </div>" +
-               "</body>" +
-               "</html>";
+                "<html lang=\"en\">" +
+                "<head>" +
+                "    <meta charset=\"UTF-8\">" +
+                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">" +
+                "    <title>Confirmation Email</title>" +
+                "    <style>" +
+                "        body {" +
+                "            font-family: 'Arial', sans-serif;" +
+                "            background-color: #f9f9f9;" +
+                "            color: #333;" +
+                "            margin: 0;" +
+                "            padding: 0;" +
+                "        }" +
+                "        a { color: inherit; }" +
+                "        .container {" +
+                "            max-width: 600px;" +
+                "            margin: 20px auto;" +
+                "            background-color: #ffffff;" +
+                "            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);" +
+                "            border-radius: 8px;" +
+                "            overflow: hidden;" +
+                "        }" +
+                "        .header {" +
+                "            background-color: #d3d3d3;" +
+                "            color: #333;" +
+                "            padding: 20px 0;" +
+                "        }" +
+                "        .header h1 {" +
+                "            margin: 0;" +
+                "            font-size: 24px;" +
+                "            padding-left: 24px;" +
+                "        }" +
+                "        .sub-header {" +
+                "            background-color: #f0f0f0;" +
+                "            color: #555;" +
+                "            padding: 10px 0;" +
+                "            font-size: 14px;" +
+                "        }" +
+                "        .sub-header p {" +
+                "            padding-left: 24px;" +
+                "        }" +
+                "        .content {" +
+                "            padding: 30px;" +
+                "        }" +
+                "        .content p {" +
+                "            margin: 15px 0;" +
+                "            font-size: 16px;" +
+                "            line-height: 1.5;" +
+                "        }" +
+                "        .button-container {" +
+                "            margin-top: 20px;" +
+                "        }" +
+                "        .button {" +
+                "            display: inline-block;" +
+                "            padding: 12px 25px;" +
+                "            background-color: #7c5cff;" +
+                "            color: #ffffff;" +
+                "            text-decoration: none;" +
+                "            border-radius: 5px;" +
+                "            font-size: 16px;" +
+                "        }" +
+                "        .button:hover {" +
+                "            background-color: #866ded;" +
+                "        }" +
+                "        .button-text{" +
+                "            color: #ffffff;" +
+                "        }" +
+                "    </style>" +
+                "</head>" +
+                "<body>" +
+                "    <div class=\"container\">" +
+                "        <div class=\"header\">" +
+                "            <h1> Cura - Your Trusted Addiction Recovery Companion</h1>" + // Removed emojis
+                "        </div>" +
+                "        <div class=\"content\">" +
+                "            <p>" + message + "</p>" +
+                "            <div class=\"button-container\">" +
+                "                <a href=\"" + url + "\" class=\"button\">" +
+                "                  <div class=\"button-text\">   " +
+                buttonText + "</div></a>" +
+                "            </div>" +
+                "        </div>" +
+                "        <div class=\"sub-header\">" +
+                "            <p>Created with ❤️ by Devs of Cura</p>" +
+                "        </div>" +
+                "    </div>" +
+                "</body>" +
+                "</html>";
     }
-    
+
+
     private void sendConfirmationEmail(Users user, String confirmationToken, String message, String subject, String url, String buttonText) {
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(user.getEmail());
-        mailMessage.setSubject(subject);
-    
         String emailBody = createConfirmationEmailBody(message, url + confirmationToken, buttonText);
-        mailMessage.setText(emailBody);
-    
-        emailService.Send(mailMessage);
+        try{
+            emailService.sendHtmlEmail(user.getEmail(),subject, emailBody);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
     
 
