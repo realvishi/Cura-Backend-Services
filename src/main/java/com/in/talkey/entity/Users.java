@@ -2,10 +2,13 @@ package com.in.talkey.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.type.SqlTypes;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -58,6 +61,10 @@ public class Users  implements UserDetails {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Timestamp updatedAt;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "remedy", columnDefinition = "jsonb")
+    private JsonNode remedy;
 
 
     @JsonManagedReference

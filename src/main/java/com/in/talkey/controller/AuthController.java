@@ -1,5 +1,6 @@
 package com.in.talkey.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.in.talkey.dto.LoginDto;
 import com.in.talkey.dto.RegisterDto;
 import com.in.talkey.dto.ResetDto;
@@ -55,5 +56,15 @@ public class AuthController {
     @RequestMapping("/allowed")
     public String allowed(){
         return "This endpoint is open.";
+    }
+
+    @GetMapping("/remedy")
+    public ResponseEntity<JsonNode> getRemedyJSON(@RequestParam("email") String email){
+        return userService.getRemedyJSON(email);
+    }
+
+    @PostMapping("/remedy")
+    public ResponseEntity<JsonNode> setRemedyJSON( @RequestParam("email") String email ,@RequestBody JsonNode remedy){
+        return userService.setRemedyJSON(email, remedy);
     }
 }

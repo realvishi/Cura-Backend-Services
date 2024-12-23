@@ -1,5 +1,6 @@
 package com.in.talkey.service.implement;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.in.talkey.dto.LoginDto;
 import com.in.talkey.dto.LoginResponseDto;
 import com.in.talkey.dto.RegisterDto;
@@ -13,7 +14,6 @@ import com.in.talkey.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,7 +24,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -310,6 +309,29 @@ public class UserServiceImpl implements UserService{
         }
     }
 
+    @Override
+    public ResponseEntity<JsonNode> getRemedyJSON(String email) {
+       try{
+           Users users = usersRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User Not Found"));
+           return ResponseEntity.ok(users.getRemedy());
+       }
+       catch (Exception e){
+           throw new RuntimeException("User Not Found");
+       }
+    }
+
+    @Override
+    public ResponseEntity<JsonNode> setRemedyJSON(String email, JsonNode remedy) {
+        try{
+            Users users = usersRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User Not Found"));
+            users.setRemedy(remedy);
+            usersRepository.save(users);
+            return ResponseEntity.ok(users.getRemedy());
+        }
+        catch (Exception e){
+            throw new RuntimeException("User Not Found");
+        }
+    }
 
 
 }

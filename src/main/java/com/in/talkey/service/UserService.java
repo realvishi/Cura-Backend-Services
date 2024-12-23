@@ -1,8 +1,8 @@
 package com.in.talkey.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.in.talkey.dto.LoginDto;
 import com.in.talkey.dto.RegisterDto;
-import com.in.talkey.entity.Users;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -18,4 +18,8 @@ public interface UserService {
      ResponseEntity<?> ForgotPassword(String email);
 
      ResponseEntity<?> ResetPassword(String newPassword, String token);
+
+     ResponseEntity<JsonNode> getRemedyJSON(String email);
+
+     ResponseEntity<JsonNode> setRemedyJSON(String email, JsonNode remedy);
 }
